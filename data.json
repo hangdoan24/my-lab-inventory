@@ -5,9 +5,9 @@
     "owner": "Hang",
     "category": "Brains",
     "status": "Available",
-    "qty": "1 unit",
+    "qty": "1",
     "note": "Standard Arduino Uno R3 compatible board from Elegoo. Perfect for basic prototyping.",
-    "datasheet": "https://www.elegoo.com/blogs/arduino-projects/elegoo-uno-project-super-starter-kit",
+    "datasheet": "https://www.manualslib.com/products/Elegoo-Uno-R3-10957795.html",
     "image": "assets/images/elegoo_uno_r3_hang.png"
   },
   {
@@ -16,8 +16,8 @@
     "owner": "Hang",
     "category": "Brains",
     "status": "Available",
-    "qty": "1 unit",
-    "note": "4GB RAM version. Used for ROS2 or heavy processing tasks. Keep the fan running!",
+    "qty": "1",
+    "note": "",
     "datasheet": "https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-datasheet.pdf",
     "image": "assets/images/rpi4_hang.jpg"
   },
@@ -31,5 +31,16 @@
     "note": "bei Hang zu Hause.",
     "datasheet": "",
     "image": "assets/images/stripper_tool_minh.jpg"
+  }
+    {
+    "id": 4,
+    "name": "LCD-1602A I2C Display",
+    "owner": "Hang",
+    "category": "Electronics",
+    "status": "Available",
+    "qty": "1",
+    "note": "",
+    "datasheet": "https://techdiagrammer.com/lcd-1602a-datasheet",
+    "image": "assets/images/LCD1602-Display-hang.jpg"
   }
 ]
