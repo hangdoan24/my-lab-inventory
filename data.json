@@ -1,0 +1,35 @@
+[
+  {
+    "id": 1,
+    "name": "Elegoo Uno R3",
+    "owner": "Hang",
+    "category": "Brains",
+    "status": "Available",
+    "qty": "1 unit",
+    "note": "Standard Arduino Uno R3 compatible board from Elegoo. Perfect for basic prototyping.",
+    "datasheet": "https://www.elegoo.com/blogs/arduino-projects/elegoo-uno-project-super-starter-kit",
+    "image": "assets/images/elegoo_uno_r3_hang.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Raspberry Pi 4 Model B",
+    "owner": "Hang",
+    "category": "Brains",
+    "status": "Available",
+    "qty": "1 unit",
+    "note": "4GB RAM version. Used for ROS2 or heavy processing tasks. Keep the fan running!",
+    "datasheet": "https://datasheets.raspberrypi.com/rpi4/raspberry-pi-4-datasheet.pdf",
+    "image": "assets/images/rpi4_hang.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Kabelabisolierzange",
+    "owner": "Minh",
+    "category": "Tools",
+    "status": "Borrowed",
+    "qty": "1 unit",
+    "note": "bei Hang zu Hause.",
+    "datasheet": "",
+    "image": "assets/images/stripper_tool_minh.jpg"
+  }
+]
