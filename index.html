@@ -3,99 +3,167 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Lab Inventory | Hang Doan</title>
+    <title>Our Little Engineering Lab Inventory</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --primary-color: #2c3e50; }
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: var(--primary-color); color: white; margin-bottom: 30px; padding: 20px 0; }
-        .card { border: none; transition: transform 0.2s; border-radius: 12px; overflow: hidden; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .card-img-top { height: 200px; object-fit: cover; background: #e9ecef; }
-        .category-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
-        .search-container { max-width: 600px; margin: 0 auto 30px auto; }
-        .btn-filter { border-radius: 20px; padding: 5px 20px; margin: 5px; }
+        :root { --sidebar-bg: #f8f9fa; --primary-dark: #2c3e50; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; }
+        
+        /* Sidebar Styling */
+        .sidebar { background: var(--sidebar-bg); border-right: 1px solid #dee2e6; min-height: 100vh; padding: 20px; }
+        .filter-group { margin-bottom: 25px; }
+        .filter-title { font-weight: bold; font-size: 0.9rem; text-transform: uppercase; color: #6c757d; margin-bottom: 10px; display: block; }
+        
+        /* Card Styling */
+        .inventory-card { border: none; border-radius: 12px; transition: 0.3s; overflow: hidden; height: 100%; }
+        .inventory-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.12); }
+        .card-img-top { height: 160px; object-fit: cover; background: #e9ecef; }
+        
+        /* Badge Colors */
+        .badge-hang { background-color: #e83e8c; } /* Pink-ish */
+        .badge-minh { background-color: #007bff; } /* Blue */
+        .badge-shared { background-color: #6c757d; } /* Grey */
+        
+        .status-tag { font-size: 0.75rem; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
+        .status-available { background: #d4edda; color: #155724; }
+        .status-in-project { background: #fff3cd; color: #856404; }
+        .status-borrowed { background: #f8d7da; color: #721c24; }
     </style>
 </head>
 <body>
 
-<nav class="navbar shadow-sm">
-    <div class="container text-center">
-        <h1 class="h3 mb-0">🛠️ My Engineering Lab Inventory</h1>
-        <small class="opacity-75">Personal Component Library & Tool Tracking</small>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="search-container">
-        <input type="text" id="searchInput" class="form-control form-control-lg shadow-sm" placeholder="Search components (e.g. ESP32, Sensor...)" onkeyup="searchItems()">
-    </div>
-
-    <div class="d-flex justify-content-center mb-5 gap-1 flex-wrap">
-        <button class="btn btn-primary btn-filter active" onclick="filterItems('all', this)">All</button>
-        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('MCU', this)">Brains (MCU/SBC)</button>
-        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Sensor', this)">Sensors (Sensoren)</button>
-        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Actuator', this)">Motors (Aktoren)</button>
-        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Power', this)">Power (Energie)</button>
-        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Tool', this)">Tools (Werkzeuge)</button>
-    </div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="inventoryList">
-        
-        <div class="col item-card" data-category="MCU">
-            <div class="card h-100 shadow-sm">
-                <span class="badge bg-dark category-badge">MCU</span>
-                <img src="https://via.placeholder.com/400x250?text=ESP32-S3+Cam" class="card-img-top" alt="ESP32-S3 AI Cam">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">ESP32-S3 AI Camera</h5>
-                    <p class="mb-1"><strong>Purchase Date:</strong> 2026-03-15</p>
-                    <p class="text-muted small">Dual-core MCU with Wi-Fi/BT and Camera support for Edge AI projects.</p>
-                </div>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="col-md-3 col-lg-2 sidebar">
+            <h4 class="mb-4 text-primary">⚙️ Our Lab</h4>
+            
+            <div class="filter-group">
+                <input type="text" id="searchBox" class="form-control mb-3" placeholder="Search name..." onkeyup="filterInventory()">
             </div>
-        </div>
 
-        <div class="col item-card" data-category="Sensor">
-            <div class="card h-100 shadow-sm">
-                <span class="badge bg-dark category-badge">Sensor</span>
-                <img src="https://via.placeholder.com/400x250?text=RPLIDAR+A1" class="card-img-top" alt="RPLIDAR A1M8">
-                <div class="card-body">
-                    <h5 class="card-title text-primary">RPLIDAR A1M8</h5>
-                    <p class="mb-1"><strong>Purchase Date:</strong> 2026-02-01</p>
-                    <p class="text-muted small">360-degree Laser Range Scanner for SLAM and robot mapping.</p>
-                </div>
+            <div class="filter-group">
+                <span class="filter-title">Owner</span>
+                <select id="ownerFilter" class="form-select" onchange="filterInventory()">
+                    <option value="all">All Owners</option>
+                    <option value="Hang">Hang's</option>
+                    <option value="Minh">Minh's</option>
+                    <option value="Shared">Shared</option>
+                </select>
             </div>
-        </div>
 
-        </div>
+            <div class="filter-group">
+                <span class="filter-title">Category</span>
+                <select id="categoryFilter" class="form-select" onchange="filterInventory()">
+                    <option value="all">All Categories</option>
+                    <option value="Brains">Brains (MCU/SBC)</option>
+                    <option value="Sensors">Sensors</option>
+                    <option value="Actuators">Actuators</option>
+                    <option value="Power">Power Supply</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Mechanics">Mechanics (Vít/Mutter)</option>
+                    <option value="Tools">Tools/Workshop</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <span class="filter-title">Status</span>
+                <select id="statusFilter" class="form-select" onchange="filterInventory()">
+                    <option value="all">Any Status</option>
+                    <option value="Available">Available</option>
+                    <option value="InProject">In Project</option>
+                    <option value="Borrowed">Borrowed</option>
+                    <option value="Broken">Broken</option>
+                </select>
+            </div>
+        </nav>
+
+        <main class="col-md-9 col-lg-10 py-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 px-3">
+                <h2 class="fw-bold text-dark">Our Little Engineering Lab Inventory</h2>
+                <span class="badge bg-secondary" id="countDisplay">Show all</span>
+            </div>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-4" id="inventoryGrid">
+                
+                <div class="col item-card" data-owner="Hang" data-category="Sensors" data-status="Available">
+                    <div class="card inventory-card shadow-sm">
+                        <img src="https://via.placeholder.com/300x160?text=LiDAR+A1" class="card-img-top" alt="LiDAR">
+                        <div class="card-body">
+                            <span class="badge badge-hang mb-2">Hang</span>
+                            <h5 class="card-title h6 mb-1">RPLIDAR A1M8</h5>
+                            <div class="mb-2">
+                                <span class="status-tag status-available">Available</span>
+                            </div>
+                            <p class="text-muted small mb-0">Qty: 1 unit</p>
+                            <p class="text-muted small">Loc: Shelf A1</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col item-card" data-owner="Minh" data-category="Actuators" data-status="InProject">
+                    <div class="card inventory-card shadow-sm">
+                        <img src="https://via.placeholder.com/300x160?text=Nema+17" class="card-img-top" alt="Nema 17">
+                        <div class="card-body">
+                            <span class="badge badge-minh mb-2">Minh</span>
+                            <h5 class="card-title h6 mb-1">Nema 17 Stepper</h5>
+                            <div class="mb-2">
+                                <span class="status-tag status-in-project">In Project: 3D Printer</span>
+                            </div>
+                            <p class="text-muted small mb-0">Qty: 4 units</p>
+                            <p class="text-muted small">Borrower: No one</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col item-card" data-owner="Shared" data-category="Mechanics" data-status="Available">
+                    <div class="card inventory-card shadow-sm">
+                        <img src="https://via.placeholder.com/300x160?text=M3+Screws" class="card-img-top" alt="M3 Screws">
+                        <div class="card-body">
+                            <span class="badge badge-shared mb-2">Shared</span>
+                            <h5 class="card-title h6 mb-1">M3 Screw Set (Hex)</h5>
+                            <div class="mb-2">
+                                <span class="status-tag status-available">Available</span>
+                            </div>
+                            <p class="text-muted small mb-0">Qty: ~200 pcs</p>
+                            <p class="text-muted small">Loc: Blue Box</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
 </div>
 
 <script>
-    // FILTER LOGIC
-    function filterItems(category, button) {
-        document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.replace('btn-primary', 'btn-outline-primary'));
-        button.classList.replace('btn-outline-primary', 'btn-primary');
-
-        const cards = document.querySelectorAll('.item-card');
-        cards.forEach(card => {
-            const matchesCategory = (category === 'all' || card.getAttribute('data-category') === category);
-            card.style.display = matchesCategory ? 'block' : 'none';
-        });
-    }
-
-    // SEARCH LOGIC
-    function searchItems() {
-        let input = document.getElementById('searchInput').value.toLowerCase();
-        let cards = document.querySelectorAll('.item-card');
+    function filterInventory() {
+        const search = document.getElementById('searchBox').value.toLowerCase();
+        const owner = document.getElementById('ownerFilter').value;
+        const category = document.getElementById('categoryFilter').value;
+        const status = document.getElementById('statusFilter').value;
         
+        const cards = document.querySelectorAll('.item-card');
+        let count = 0;
+
         cards.forEach(card => {
-            let title = card.querySelector('.card-title').innerText.toLowerCase();
-            let text = card.querySelector('.card-text')?.innerText.toLowerCase() || "";
-            if (title.includes(input) || text.includes(input)) {
-                card.style.display = "";
+            const cardName = card.querySelector('.card-title').innerText.toLowerCase();
+            const cardOwner = card.getAttribute('data-owner');
+            const cardCat = card.getAttribute('data-category');
+            const cardStatus = card.getAttribute('data-status');
+
+            const matchesSearch = cardName.includes(search);
+            const matchesOwner = (owner === 'all' || cardOwner === owner);
+            const matchesCat = (category === 'all' || cardCat === category);
+            const matchesStatus = (status === 'all' || cardStatus === status);
+
+            if (matchesSearch && matchesOwner && matchesCat && matchesStatus) {
+                card.style.display = "block";
+                count++;
             } else {
                 card.style.display = "none";
             }
         });
+        document.getElementById('countDisplay').innerText = `Showing ${count} items`;
     }
 </script>
 </body>
