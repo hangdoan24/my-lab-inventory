@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Lab Inventory - Hang Doan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .card-img-top { height: 180px; object-fit: cover; background: #f0f0f0; }
+        .category-badge { position: absolute; top: 10px; right: 10px; }
+        .item-card { display: block; } /* Mặc định hiển thị tất cả */
+    </style>
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <h1 class="text-center mb-4">🛠️ Thư viện Linh kiện & Thiết bị</h1>
+    <p class="text-center text-muted">Quản lý kho lab cá nhân của Hang Doan</p>
+    
+    <div class="d-flex justify-content-center mb-4 gap-2 flex-wrap">
+        <button class="btn btn-outline-primary active" onclick="filterItems('all', this)">Tất cả</button>
+        <button class="btn btn-outline-primary" onclick="filterItems('MCU', this)">Vi điều khiển</button>
+        <button class="btn btn-outline-primary" onclick="filterItems('Sensor', this)">Cảm biến</button>
+        <button class="btn btn-outline-primary" onclick="filterItems('Tool', this)">Công cụ</button>
+        <button class="btn btn-outline-primary" onclick="filterItems('Other', this)">Khác</button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="inventory-list">
+        
+        <div class="col item-card" data-category="MCU">
+            <div class="card h-100 shadow-sm position-relative">
+                <span class="badge bg-info category-badge">MCU</span>
+                <img src="https://via.placeholder.com/300x180?text=ESP32-S3+Cam" class="card-img-top" alt="ESP32-S3 Cam">
+                <div class="card-body">
+                    <h5 class="card-title">ESP32-S3 AI Camera</h5>
+                    <p class="card-text text-muted small">Ngày mua: 15.03.2024</p>
+                    <p class="card-text">Vi điều khiển tích hợp camera, dùng cho dự án AI Robot.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col item-card" data-category="Sensor">
+            <div class="card h-100 shadow-sm position-relative">
+                <span class="badge bg-info category-badge">Sensor</span>
+                <img src="https://via.placeholder.com/300x180?text=RPLIDAR+A1" class="card-img-top" alt="RPLIDAR A1">
+                <div class="card-body">
+                    <h5 class="card-title">RPLIDAR A1M8</h5>
+                    <p class="card-text text-muted small">Ngày mua: 01.02.2024</p>
+                    <p class="card-text">Cảm biến quét 360 độ để mapping không gian.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Hàm lọc linh kiện theo phân loại
+    function filterItems(category, button) {
+        // Cập nhật trạng thái nút bấm
+        const buttons = document.querySelectorAll('.btn-outline-primary');
+        buttons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+
+        // Lọc các thẻ linh kiện
+        const cards = document.querySelectorAll('.item-card');
+        cards.forEach(card => {
+            if (category === 'all' || card.getAttribute('data-category') === category) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+</script>
+</body>
+</html>
