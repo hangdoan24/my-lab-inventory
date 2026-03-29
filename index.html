@@ -1,74 +1,99 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Lab Inventory - Hang Doan</title>
+    <title>My Lab Inventory | Hang Doan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .card-img-top { height: 180px; object-fit: cover; background: #f0f0f0; }
-        .category-badge { position: absolute; top: 10px; right: 10px; }
-        .item-card { display: block; } /* Mặc định hiển thị tất cả */
+        :root { --primary-color: #2c3e50; }
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        .navbar { background-color: var(--primary-color); color: white; margin-bottom: 30px; padding: 20px 0; }
+        .card { border: none; transition: transform 0.2s; border-radius: 12px; overflow: hidden; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card-img-top { height: 200px; object-fit: cover; background: #e9ecef; }
+        .category-badge { position: absolute; top: 15px; right: 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .search-container { max-width: 600px; margin: 0 auto 30px auto; }
+        .btn-filter { border-radius: 20px; padding: 5px 20px; margin: 5px; }
     </style>
 </head>
-<body class="bg-light">
+<body>
 
-<div class="container py-5">
-    <h1 class="text-center mb-4">🛠️ Thư viện Linh kiện & Thiết bị</h1>
-    <p class="text-center text-muted">Quản lý kho lab cá nhân của Hang Doan</p>
-    
-    <div class="d-flex justify-content-center mb-4 gap-2 flex-wrap">
-        <button class="btn btn-outline-primary active" onclick="filterItems('all', this)">Tất cả</button>
-        <button class="btn btn-outline-primary" onclick="filterItems('MCU', this)">Vi điều khiển</button>
-        <button class="btn btn-outline-primary" onclick="filterItems('Sensor', this)">Cảm biến</button>
-        <button class="btn btn-outline-primary" onclick="filterItems('Tool', this)">Công cụ</button>
-        <button class="btn btn-outline-primary" onclick="filterItems('Other', this)">Khác</button>
+<nav class="navbar shadow-sm">
+    <div class="container text-center">
+        <h1 class="h3 mb-0">🛠️ My Engineering Lab Inventory</h1>
+        <small class="opacity-75">Personal Component Library & Tool Tracking</small>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="search-container">
+        <input type="text" id="searchInput" class="form-control form-control-lg shadow-sm" placeholder="Search components (e.g. ESP32, Sensor...)" onkeyup="searchItems()">
     </div>
 
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="inventory-list">
+    <div class="d-flex justify-content-center mb-5 gap-1 flex-wrap">
+        <button class="btn btn-primary btn-filter active" onclick="filterItems('all', this)">All</button>
+        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('MCU', this)">Brains (MCU/SBC)</button>
+        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Sensor', this)">Sensors (Sensoren)</button>
+        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Actuator', this)">Motors (Aktoren)</button>
+        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Power', this)">Power (Energie)</button>
+        <button class="btn btn-outline-primary btn-filter" onclick="filterItems('Tool', this)">Tools (Werkzeuge)</button>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="inventoryList">
         
         <div class="col item-card" data-category="MCU">
-            <div class="card h-100 shadow-sm position-relative">
-                <span class="badge bg-info category-badge">MCU</span>
-                <img src="https://via.placeholder.com/300x180?text=ESP32-S3+Cam" class="card-img-top" alt="ESP32-S3 Cam">
+            <div class="card h-100 shadow-sm">
+                <span class="badge bg-dark category-badge">MCU</span>
+                <img src="https://via.placeholder.com/400x250?text=ESP32-S3+Cam" class="card-img-top" alt="ESP32-S3 AI Cam">
                 <div class="card-body">
-                    <h5 class="card-title">ESP32-S3 AI Camera</h5>
-                    <p class="card-text text-muted small">Ngày mua: 15.03.2024</p>
-                    <p class="card-text">Vi điều khiển tích hợp camera, dùng cho dự án AI Robot.</p>
+                    <h5 class="card-title text-primary">ESP32-S3 AI Camera</h5>
+                    <p class="mb-1"><strong>Purchase Date:</strong> 2026-03-15</p>
+                    <p class="text-muted small">Dual-core MCU with Wi-Fi/BT and Camera support for Edge AI projects.</p>
                 </div>
             </div>
         </div>
 
         <div class="col item-card" data-category="Sensor">
-            <div class="card h-100 shadow-sm position-relative">
-                <span class="badge bg-info category-badge">Sensor</span>
-                <img src="https://via.placeholder.com/300x180?text=RPLIDAR+A1" class="card-img-top" alt="RPLIDAR A1">
+            <div class="card h-100 shadow-sm">
+                <span class="badge bg-dark category-badge">Sensor</span>
+                <img src="https://via.placeholder.com/400x250?text=RPLIDAR+A1" class="card-img-top" alt="RPLIDAR A1M8">
                 <div class="card-body">
-                    <h5 class="card-title">RPLIDAR A1M8</h5>
-                    <p class="card-text text-muted small">Ngày mua: 01.02.2024</p>
-                    <p class="card-text">Cảm biến quét 360 độ để mapping không gian.</p>
+                    <h5 class="card-title text-primary">RPLIDAR A1M8</h5>
+                    <p class="mb-1"><strong>Purchase Date:</strong> 2026-02-01</p>
+                    <p class="text-muted small">360-degree Laser Range Scanner for SLAM and robot mapping.</p>
                 </div>
             </div>
         </div>
 
-    </div>
+        </div>
 </div>
 
 <script>
-    // Hàm lọc linh kiện theo phân loại
+    // FILTER LOGIC
     function filterItems(category, button) {
-        // Cập nhật trạng thái nút bấm
-        const buttons = document.querySelectorAll('.btn-outline-primary');
-        buttons.forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
+        document.querySelectorAll('.btn-filter').forEach(btn => btn.classList.replace('btn-primary', 'btn-outline-primary'));
+        button.classList.replace('btn-outline-primary', 'btn-primary');
 
-        // Lọc các thẻ linh kiện
         const cards = document.querySelectorAll('.item-card');
         cards.forEach(card => {
-            if (category === 'all' || card.getAttribute('data-category') === category) {
-                card.style.display = 'block';
+            const matchesCategory = (category === 'all' || card.getAttribute('data-category') === category);
+            card.style.display = matchesCategory ? 'block' : 'none';
+        });
+    }
+
+    // SEARCH LOGIC
+    function searchItems() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        let cards = document.querySelectorAll('.item-card');
+        
+        cards.forEach(card => {
+            let title = card.querySelector('.card-title').innerText.toLowerCase();
+            let text = card.querySelector('.card-text')?.innerText.toLowerCase() || "";
+            if (title.includes(input) || text.includes(input)) {
+                card.style.display = "";
             } else {
-                card.style.display = 'none';
+                card.style.display = "none";
             }
         });
     }
